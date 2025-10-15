@@ -83,7 +83,6 @@ multipart/form-data with a file field.
 - Response:
 
 ```json
-Copy code
 {
   "videoId": "abc123",
   "message": "Video uploaded and indexed",
@@ -98,7 +97,6 @@ Copy code
 - Response:
 
 ```json
-Copy code
 {
   "videoId": "abc123",
   "query": "explain gradient descent",
@@ -113,26 +111,30 @@ Copy code
 
 ### 1. Clone & Install
 
+[repo_url](https://github.com/Anish-Singh-Dhami/Video-Semantic-Search.git)
 ```bash
-Copy code
-git clone <repo-url>
+git clone <repo_url>
 cd backend
 npm install
 ```
 
 ### 2. Configure Environment Variables
 
-Fill with your api keys:
+Create .env file at the root level and fill with your api keys:
 
 ```bash
 PORT=5000
+
 HF_API_KEY=hf_xxx
-QDRANT_URL=https://your-instance.qdrant.tech
 QDRANT_API_KEY=your_api_key
-R2_BUCKET_NAME=video-storage
 R2_ACCESS_KEY_ID=your_access_key
 R2_SECRET_ACCESS_KEY=your_secret_key
 MONGO_URI=mongodb+srv://...
+
+HF_AUTOMATIC_SPEECH_RECOGNITION_API_URL=https://router.huggingface.co/hf-inference/models/openai/whisper-large-v3
+HF_FEATURE_EXTRACTION_API_URL=https://router.huggingface.co/hf-inference/models/sentence-transformers/all-MiniLM-L6-v2/pipeline/feature-extraction
+QDRANT_URL=https://your-instance.qdrant.tech
+R2_BUCKET_NAME=video-storage
 ```
 
 ### 3. Start Server
