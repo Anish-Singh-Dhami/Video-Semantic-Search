@@ -38,12 +38,10 @@ backend/
 │ ├── routes/
 │ │ ├── video.routes.ts # Upload & status APIs
 │ │ └── search.routes.ts # Query API
-
-
 │ ├── controllers/
 │ │ └── video.controller.ts
 │ ├── services/
-│ │ ├── transcript.service.ts # Whisper ASR logic
+│ │ ├── whisper.service.ts # Whisper ASR logic
 │ │ ├── embed.service.ts # Hugging Face embedding service
 │ │ ├── vector.service.ts # Qdrant client logic
 │ │ └── storage.service.ts # Cloudflare R2 integration
@@ -51,19 +49,15 @@ backend/
 │ │ ├── extractAudio.ts
 │ │ └── chunkText.ts
 │ ├── config/
-│ │ ├── env.ts
-│ │ └── qdrant.ts
-│ └── types/
-│ └── video.types.ts
-├── uploads/
-├── .env.example
+│ │ ├── qdrant.ts
+├── .env
 ├── package.json
 └── README.md
 ```
 
-## 🧠 System Architecture
-
-![System Architecture](https://your-image-host.com/architecture.png)
+<!-- TODO -->
+<!-- ## 🧠 System Architecture 
+![System Architecture](https://img-service-provider/architecture.png) -->
 
 ## ⚙️ API Endpoints
 
