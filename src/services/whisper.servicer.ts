@@ -11,18 +11,19 @@ const HF_API_KEY = process.env.HF_API_KEY;
  */
 
 export type ChunkType = {
-  timestamp: [number, number];
+  timestamp?: { start_time: number; end_time: number };
   text: string;
-}
+};
 
 export type TranscriptionResponse = {
   text: String;
   chunks: ChunkType[];
-}
+};
 
-export const transcribeAudio = async (audioPath: string): Promise<TranscriptionResponse> => {
+export const transcribeAudio = async (
+  audioPath: string
+): Promise<TranscriptionResponse> => {
   console.log("🚀 Sending audio to Whisper API:", audioPath);
-
   try {
     const audioFile = fs.readFileSync(audioPath);
     const ext = path.extname(audioPath).toLowerCase();
@@ -47,10 +48,10 @@ export const transcribeAudio = async (audioPath: string): Promise<TranscriptionR
         responseType: "json",
         params: {
           return_timestamps: true,
-        }
+        },
       }
     );
-    console.log(response.data.chunks);
+    console.log("✅ Transcription received from Whisper API");
     return response.data;
   } catch (error: any) {
     console.error(
