@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { ChunkType } from "./whisper.servicer.js";
+import type { Chunk } from "./transcription.service.js";
 
 const HF_FEATURE_EXTRACTION_API_URL =
   process.env.HF_FEATURE_EXTRACTION_API_URL!;
@@ -10,8 +10,13 @@ export type EmbeddingResponse = {
   embedding: number[];
 };
 
+/**
+ * This service is also cloud based, and have similar problems as with cloud based ASR service.
+ * Free tier solution has limit over the number of requests.
+ */
+
 export const generateEmbeddings = async (
-  segments: ChunkType[]
+  segments: Chunk[]
 ): Promise<EmbeddingResponse[]> => {
   console.log("🚀 Generating embeddings for transcript segments");
   try {

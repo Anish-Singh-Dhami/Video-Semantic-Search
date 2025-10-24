@@ -6,23 +6,25 @@ const HF_AUTOMATIC_SPEECH_RECOGNITION_API_URL =
   process.env.HF_AUTOMATIC_SPEECH_RECOGNITION_API_URL!;
 const HF_API_KEY = process.env.HF_API_KEY;
 
-/**
- * Send audio file to HuggingFace Whisper model for transcription
- */
-
-export type ChunkType = {
-  timestamp?: { start_time: number; end_time: number };
+export type Chunk = {
   text: string;
+  timestamp: [start_time: number, end_time: number];
 };
 
-export type TranscriptionResponse = {
-  text: String;
-  chunks: ChunkType[];
+export type TranscriptionResult = {
+  text: string;
+  chunks?: Chunk[];
 };
+
+/**
+ * Send audio file to HuggingFace Whisper model for transcription,
+ * Having a limitation on the number of requests in free service,
+ * going with local deployment using huggingface's transformer.js package for ASR task.
+ */
 
 export const transcribeAudio = async (
   audioPath: string
-): Promise<TranscriptionResponse> => {
+): Promise<TranscriptionResult> => {
   console.log("🚀 Sending audio to Whisper API:", audioPath);
   try {
     const audioFile = fs.readFileSync(audioPath);

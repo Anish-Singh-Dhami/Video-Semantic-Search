@@ -12,7 +12,6 @@ app.use(express.json());
 app.use("/api", videoRoutes);
 app.use("/api", searchRoutes);
 
-
 app.listen(PORT, () => {
   console.log("PORT ", PORT);
   console.log(`Server is running on http://localhost:${PORT}`);
