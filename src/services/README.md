@@ -24,9 +24,8 @@
 ```JSON
 {
     "id": "<UUID>",
-    "vector": [...],
+    "vector": ["pooled vector embeddings(384 dimension) of the payload text"],
     "payload": {
-        "video_id": "<UUID>",
         "text": "Original text from the transcript.",
         "start_time": 101.2,
         "end_time": 115.6,

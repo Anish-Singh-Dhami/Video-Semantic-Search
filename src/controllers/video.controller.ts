@@ -1,7 +1,12 @@
 import { type Request, type Response } from "express";
-import { extractAudioFileFromStream } from "../utils/extractAudio.js";
+import { extractAudioFileFromStream } from "../services/extractAudio.service.js";
 import { PassThrough } from "stream";
 import { transcribeAudioContext } from "../services/transcription.service.js";
+import { generateVectorPoints } from "../services/embedding.service.js";
+import {
+  storeVectorPoints,
+  type VectorPoint,
+} from "../services/vector.service.js";
 
 /**
  * Accepts a video file, transcribe it, generate the embedding, and stores the embeddings in the vector db.
@@ -14,9 +19,14 @@ export const handleVideoUpload = async (req: Request, res: Response) => {
       passThroughStream
     );
     const { text, chunks } = await transcribeAudioContext(audioFileName);
-    // TODO : Generate embeddings for chunks
+    if (chunks === undefined) throw new Error("Chunks is undefined");
+
+    const vectorPoints: VectorPoint[] = await generateVectorPoints(chunks);
+    await storeVectorPoints(uuid, vectorPoints);
+
     res.json({
-      message: "finally finised!!",
+      message: "Video is processed and ready for semantic search",
+      collectionId: uuid,
     });
   } catch (error: any) {
     console.error("Upload Error:", error.message);

@@ -46,8 +46,9 @@ export const initVectorCollection = async (
 export const storeVectorPoints = async (
   collectionName: string,
   vectors: VectorPoint[]
-) => {
+): Promise<void> => {
   try {
+    console.log("⚡Storing vectors in the Qdrant vector DB.");
     await initVectorCollection(
       collectionName,
       vectors[0]?.vector.length || DEFAULT_QDRANT_VECTOR_SIZE
