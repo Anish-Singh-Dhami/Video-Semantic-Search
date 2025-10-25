@@ -1,10 +1,15 @@
-import { cos_sim, pipeline, type DataArray } from "@huggingface/transformers";
+import { pipeline, type DataArray } from "@huggingface/transformers";
 import type { Chunk } from "./transcription.service.js";
 import type { SegmentPayload, VectorPoint } from "./vector.service.js";
 
-const extractor = await pipeline("feature-extraction");
+const extractor = await pipeline(
+  "feature-extraction",
+  "mixedbread-ai/mxbai-embed-large-v1"
+);
 
-const generateEmbedding = async (chunkText: string): Promise<DataArray> => {
+export const generateEmbedding = async (
+  chunkText: string
+): Promise<DataArray> => {
   const result = await extractor(chunkText, {
     pooling: "mean",
     normalize: true,
@@ -13,7 +18,7 @@ const generateEmbedding = async (chunkText: string): Promise<DataArray> => {
 };
 
 /**
- * Generate {@link VectorPoint} from the chunked transcipt using hugging face transformers.js pipeline 
+ * Generate {@link VectorPoint} from the chunked transcipt using hugging face transformers.js pipeline
  * feature extraction task.
  * @param chunks {@link Chunk} transcription chunk containing transcribed text along with timestamps.
  * @returns `VectorPoint[]` promisified response containing vector points to be store in the Qdrant vectorDB.
@@ -33,6 +38,7 @@ export const generateVectorPoints = async (
       start_time: timestamp[0],
       end_time: timestamp[1],
     };
+    // console.log("Vector size: ", vector.length);
     vectorPoints.push({ id, vector, payload });
     id++;
   }

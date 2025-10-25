@@ -72,7 +72,7 @@ export const transcribeAudioContext = async (
   }
   try {
     const result: TranscriptionResult = (await transcriber(audioData, {
-      chunk_length_s: 30,
+      chunk_length_s: 45,
       return_timestamps: true,
     })) as AutomaticSpeechRecognitionOutput;
     console.log("🏁 Finished transcription");

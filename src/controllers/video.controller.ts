@@ -7,6 +7,7 @@ import {
   storeVectorPoints,
   type VectorPoint,
 } from "../services/vector.service.js";
+import { unlink } from "fs/promises";
 
 /**
  * Accepts a video file, transcribe it, generate the embedding, and stores the embeddings in the vector db.
@@ -23,7 +24,8 @@ export const handleVideoUpload = async (req: Request, res: Response) => {
 
     const vectorPoints: VectorPoint[] = await generateVectorPoints(chunks);
     await storeVectorPoints(uuid, vectorPoints);
-
+    // unlink the file
+    unlink(audioFileName);
     res.json({
       message: "Video is processed and ready for semantic search",
       collectionId: uuid,

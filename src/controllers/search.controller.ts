@@ -1,9 +1,8 @@
 import { type Request, type Response } from "express";
-import {
-  generateEmbeddings,
-  type EmbeddingResponse,
-} from "../services/embed.service.js";
+
 import { searchSimilarVectors } from "../services/vector.service.js";
+import { generateEmbedding } from "../services/embedding.service.js";
+import type { DataArray } from "@huggingface/transformers";
 
 export const handleSearch = async (req: Request, res: Response) => {
   try {
@@ -14,12 +13,10 @@ export const handleSearch = async (req: Request, res: Response) => {
         .json({ error: "Missing query or collectionId parameter" });
     }
 
-    const embedding: EmbeddingResponse[] = await generateEmbeddings([
-      { text: query as string },
-    ]);
-    const result = await searchSimilarVectors(
+    const embedding: DataArray = await generateEmbedding(query as string);
+    const result: any[] = await searchSimilarVectors(
       collectionId as string,
-      embedding[0]?.embedding!
+      Array.from(embedding)
     );
     res
       .status(200)

@@ -2,7 +2,7 @@ import { QdrantClient } from "@qdrant/js-client-rest";
 
 const QDRANT_URL = process.env.QDRANT_URL;
 const QDRANT_API_KEY = process.env.QDRANT_API_KEY;
-const DEFAULT_QDRANT_VECTOR_SIZE = 384; // default for all-MiniLM-L6-v2
+const DEFAULT_QDRANT_VECTOR_SIZE = 1024; // based on the embedding model used.
 
 export type SegmentPayload = {
   text: string;
@@ -69,14 +69,18 @@ export const searchSimilarVectors = async (
   vector: number[]
 ) => {
   try {
-    const result = await qdrantClient.search(collectionName, { vector });
+    const result = await qdrantClient.query(collectionName, {
+      query: vector,
+      with_payload: true,
+      score_threshold: 0.6,
+    });
     console.log(
       "✅ Successfully searched similar vectors in collection: ",
       collectionName,
       " Results: ",
-      result
+      result.points
     );
-    return result;
+    return result.points;
   } catch (error) {
     console.error("❌ Failed to search similar vectors: ", error);
     throw new Error("Failed to search similar vectors");
